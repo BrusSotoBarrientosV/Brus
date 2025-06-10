@@ -6,6 +6,10 @@
   <title>Login & Registro</title>
   <link rel="stylesheet" href="style.css"/>
   <script defer src="script.js"></script>
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <meta name="google-signin-client_id" content="TU_CLIENT_ID.apps.googleusercontent.com">
 </head>
 <body>
 <div class="background-blur" id="background-blur"></div>
@@ -25,8 +29,22 @@
         <button>Iniciar Sesión</button>
         <span>O usa tu cuenta</span>
         <div class="social-container">
-          <a href="#"><img src="https://cdn-icons-png.flaticon.com/24/733/733547.png" alt="Facebook"/></a>
-          <a href="#"><img src="https://cdn-icons-png.flaticon.com/24/281/281764.png" alt="Google"/></a>
+          <!-- Botón oficial de Google Sign-In -->
+          <div id="g_id_onload"
+               data-client_id="TU_CLIENT_ID.apps.googleusercontent.com"
+               data-context="signin"
+               data-ux_mode="popup"
+               data-callback="handleCredentialResponse"
+               data-auto_prompt="false">
+          </div>
+          <div class="g_id_signin"
+               data-type="standard"
+               data-shape="pill"
+               data-theme="outline"
+               data-text="signin_with"
+               data-size="large"
+               data-logo_alignment="left">
+          </div>
         </div>
       </form>
     </div>
@@ -41,8 +59,22 @@
         <button>Registrar</button>
         <span>o usa tu cuenta</span>
         <div class="social-container">
-          <a href="#"><img src="https://cdn-icons-png.flaticon.com/24/733/733547.png" alt="Facebook"/></a>
-          <a href="#"><img src="https://cdn-icons-png.flaticon.com/24/281/281764.png" alt="Google"/></a>
+          <!-- Repetimos Google Sign-In en registro si se desea -->
+          <div id="g_id_onload2"
+               data-client_id="620961486430-sqlt42g1qbdm3ebkrvs5k5num4kl7fue.apps.googleusercontent.com"
+               data-context="signup"
+               data-ux_mode="popup"
+               data-callback="handleCredentialResponse"
+               data-auto_prompt="false">
+          </div>
+          <div class="g_id_signin"
+               data-type="standard"
+               data-shape="pill"
+               data-theme="outline"
+               data-text="signin_with"
+               data-size="large"
+               data-logo_alignment="left">
+          </div>
         </div>
       </form>
     </div>
@@ -63,5 +95,29 @@
       </div>
     </div>
   </div>
+
+  <!-- Script para manejar respuesta del login con Google -->
+  <script>
+    function handleCredentialResponse(response) {
+      const id_token = response.credential;
+
+      // Enviar token al backend para validación
+      fetch('/api/google-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_token })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Bienvenido ' + data.name);
+          // Redirigir o guardar sesión
+          // window.location.href = '/usuarios';
+        } else {
+          alert('Error al iniciar sesión con Google.');
+        }
+      });
+    }
+  </script>
 </body>
 </html>
