@@ -59,7 +59,7 @@
         <button>Registrar</button>
         <span>o usa tu cuenta</span>
         <div class="social-container">
-          <!-- Repetimos Google Sign-In en registro si se desea -->
+          <!-- Botón de Google Sign-Up -->
           <div id="g_id_onload2"
                data-client_id="620961486430-sqlt42g1qbdm3ebkrvs5k5num4kl7fue.apps.googleusercontent.com"
                data-context="signup"
@@ -111,11 +111,14 @@
       .then(data => {
         if (data.success) {
           alert('Bienvenido ' + data.name);
-          // Redirigir o guardar sesión
           // window.location.href = '/usuarios';
         } else {
           alert('Error al iniciar sesión con Google.');
         }
+      })
+      .catch(err => {
+        console.error("Error al procesar el login:", err);
+        alert("Ocurrió un error al iniciar sesión con Google.");
       });
     }
   </script>
