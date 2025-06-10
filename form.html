@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portafolio de Estudiante</title>
+  <link rel="stylesheet" href="form.css"/>
+</head>
+<body>
+  <header>
+    <nav>
+      <h1 class="logo">Mi Portafolio</h1>
+      <ul>
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Hola, soy Juan Pérez</h2>
+    <p>Estudiante de Ingeniería de Sistemas</p>
+    <a href="#proyectos" class="btn">Ver proyectos</a>
+  </section>
+
+  <section id="sobre-mi" class="section">
+    <h2>Sobre mí</h2>
+    <p>Soy un estudiante apasionado por el desarrollo web, la inteligencia artificial y las tecnologías emergentes. Siempre estoy aprendiendo nuevas herramientas para mejorar mis habilidades.</p>
+  </section>
+
+  <section id="proyectos" class="section">
+    <h2>Proyectos</h2>
+    <div class="proyectos-container">
+      <div class="card">
+        <h3>Calculadora Web</h3>
+        <p>Una calculadora básica hecha con HTML, CSS y JavaScript.</p>
+        <a href="#">Ver más</a>
+      </div>
+      <div class="card">
+        <h3>To-Do App</h3>
+        <p>Una aplicación para gestionar tareas con almacenamiento local.</p>
+        <a href="#">Ver más</a>
+      </div>
+      <div class="card">
+        <h3>Clon de Google</h3>
+        <p>Interfaz simple que simula el buscador de Google.</p>
+        <a href="#">Ver más</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="section">
+    <h2>Contacto</h2>
+    <form id="contact-form">
+      <input type="text" placeholder="Tu nombre" required>
+      <input type="email" placeholder="Tu correo" required>
+      <textarea placeholder="Tu mensaje" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+    <p id="msg-enviado"></p>
+  </section>
+
+  <footer>
+    <p>© 2025 Juan Pérez - Todos los derechos reservados</p>
+  </footer>
+
+  <script src="form.js"></script>
+</body>
+</html>
