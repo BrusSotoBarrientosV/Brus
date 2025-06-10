@@ -101,25 +101,12 @@
     function handleCredentialResponse(response) {
       const id_token = response.credential;
 
-      // Enviar token al backend para validación
-      fetch('/api/google-login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id_token })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          alert('Bienvenido ' + data.name);
-          // window.location.href = '/usuarios';
-        } else {
-          alert('Error al iniciar sesión con Google.');
-        }
-      })
-      .catch(err => {
-        console.error("Error al procesar el login:", err);
-        alert("Ocurrió un error al iniciar sesión con Google.");
-      });
+      // Aquí puedes validar con el backend si quieres.
+      // Por ahora redirigimos directamente al portafolio:
+      console.log("ID token:", id_token);
+
+      // Redirigir al portafolio
+      window.location.href = "form.html"; // o "portafolio.html" si usas otro nombre
     }
   </script>
 </body>
