@@ -236,58 +236,8 @@ function deleteProject(id) {
     }
 }
 
-// Función para descargar proyecto mejorada
+// Función para descargar proyecto - Versión Avanzada
 function downloadProject(id) {
-    const project = projects.find(p => p.id === id);
-    if (!project) {
-        alert('Proyecto no encontrado');
-        return;
-    }
-    
-    // Si el proyecto tiene un enlace externo, intentar descargarlo
-    if (project.externalUrl) {
-        try {
-            // Crear un elemento anchor temporal
-            const linkElement = document.createElement('a');
-            linkElement.href = project.externalUrl;
-            linkElement.download = `${project.title.replace(/\s+/g, '_').toLowerCase()}`;
-            linkElement.target = '_blank';
-            
-            // Agregar al DOM temporalmente
-            document.body.appendChild(linkElement);
-            
-            // Hacer clic para iniciar la descarga
-            linkElement.click();
-            
-            // Remover el elemento del DOM
-            document.body.removeChild(linkElement);
-            
-            // Mostrar mensaje de confirmación
-            alert(`Iniciando descarga de: ${project.title}`);
-            
-        } catch (error) {
-            console.error('Error al intentar descargar:', error);
-            // Fallback: abrir en nueva pestaña si la descarga falla
-            window.open(project.externalUrl, '_blank');
-            alert('No se pudo descargar automáticamente. Se abrió en una nueva pestaña.');
-        }
-    } else {
-        // Si no hay enlace externo, descargar como JSON (comportamiento original)
-        const dataStr = JSON.stringify(project, null, 2);
-        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-        const exportFileDefaultName = `proyecto_${project.title.replace(/\s+/g, '_').toLowerCase()}.json`;
-        
-        const linkElement = document.createElement('a');
-        linkElement.setAttribute('href', dataUri);
-        linkElement.setAttribute('download', exportFileDefaultName);
-        linkElement.click();
-        
-        alert('Proyecto descargado como archivo JSON');
-    }
-}
-
-// Función alternativa más robusta que maneja diferentes tipos de enlaces
-function downloadProjectAdvanced(id) {
     const project = projects.find(p => p.id === id);
     if (!project) {
         alert('Proyecto no encontrado');
@@ -323,6 +273,8 @@ function downloadProjectAdvanced(id) {
             linkElement.click();
             document.body.removeChild(linkElement);
             
+            alert(`Descargando ${project.title} como PDF desde Google Docs`);
+            
         } else if (url.includes('drive.google.com')) {
             // Para Google Drive, convertir a enlace de descarga directa
             let fileId = '';
@@ -338,21 +290,44 @@ function downloadProjectAdvanced(id) {
                 document.body.appendChild(linkElement);
                 linkElement.click();
                 document.body.removeChild(linkElement);
+                
+                alert(`Descargando ${project.title} desde Google Drive`);
             } else {
                 // Si no se puede extraer el ID, abrir en nueva pestaña
                 window.open(url, '_blank');
+                alert('No se pudo procesar el enlace de Google Drive. Se abrió en nueva pestaña.');
             }
             
         } else if (url.includes('canva.com')) {
             // Para Canva, normalmente no se puede descargar directamente
             // Abrir en nueva pestaña con mensaje
             window.open(url, '_blank');
-            alert('Para descargar desde Canva, usa la opción de descarga dentro de la plataforma.');
+            alert('Para descargar desde Canva, usa la opción de descarga dentro de la plataforma (Compartir > Descargar).');
             
         } else if (url.includes('miro.com')) {
             // Para Miro, similar a Canva
             window.open(url, '_blank');
-            alert('Para descargar desde Miro, usa la opción de exportar dentro de la plataforma.');
+            alert('Para descargar desde Miro, usa la opción de exportar dentro de la plataforma (... > Exportar).');
+            
+        } else if (url.includes('spreadsheets.google.com')) {
+            // Para Google Sheets
+            const sheetId = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+            if (sheetId) {
+                const downloadUrl = `https://docs.google.com/spreadsheets/d/${sheetId[1]}/export?format=xlsx`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.href = downloadUrl;
+                linkElement.download = `${project.title.replace(/\s+/g, '_').toLowerCase()}.xlsx`;
+                linkElement.target = '_blank';
+                document.body.appendChild(linkElement);
+                linkElement.click();
+                document.body.removeChild(linkElement);
+                
+                alert(`Descargando ${project.title} como Excel desde Google Sheets`);
+            } else {
+                window.open(url, '_blank');
+                alert('No se pudo procesar el enlace de Google Sheets. Se abrió en nueva pestaña.');
+            }
             
         } else {
             // Para otros enlaces, intentar descarga directa
@@ -364,6 +339,8 @@ function downloadProjectAdvanced(id) {
                 document.body.appendChild(linkElement);
                 linkElement.click();
                 document.body.removeChild(linkElement);
+                
+                alert(`Intentando descargar ${project.title}`);
             } catch (error) {
                 window.open(url, '_blank');
                 alert('Se abrió el enlace en una nueva pestaña.');
@@ -381,7 +358,7 @@ function downloadProjectAdvanced(id) {
         linkElement.setAttribute('download', exportFileDefaultName);
         linkElement.click();
         
-        alert('Proyecto descargado como archivo JSON');
+        alert('Proyecto descargado como archivo JSON (no hay enlace externo)');
     }
 }
 
