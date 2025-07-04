@@ -6,8 +6,8 @@ let projects = [
         description: "Resumen crítico sobre el Libro SGBD",
         category: "Pdf",
         date: "2025-04-05",
-        externalUrl: "https://www.canva.com/design/DAGji_mWwSs/zJUd2TxrcH3X4hvvLlT56Q/edit?utm_content=DAGji_mWwSs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
-        platform: "Canva"
+        externalUrl: "https://drive.google.com/file/d/14m_Ts-JASAi0yTBfnVBhQebEvH9HLY_X/view?usp=sharing",
+        platform: "Google Drive"
     },
     {
         id: 2,
@@ -33,8 +33,8 @@ let projects = [
         description: "Diagrama entidad-relación. En Canva",
         category: "Diagrama Canva",
         date: "2024-04-05",
-        externalUrl: "https://www.canva.com/design/DAGlHR7sRnU/BD1jjQBBoTI3PwTn5GHwQg/edit?utm_content=DAGlHR7sRnU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
-        platform: "Canva"
+        externalUrl: "https://drive.google.com/file/d/1G9lqtCNNj5gPrAgeY5wyQLlMHKpIBc2s/view?usp=sharing",
+        platform: "Google Drive"
     },
     {
         id: 5,
@@ -42,8 +42,8 @@ let projects = [
         description: "Manual de creación de cuenta Azure",
         category: "Azure",
         date: "2024-05-12",
-        externalUrl: "https://www.canva.com/design/DAGlj5t7bA0/0mk4jIDYPbYNuw8QnwzFSA/edit?utm_content=DAGlj5t7bA0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
-        platform: "Canva"
+        externalUrl: "https://drive.google.com/file/d/1KbyTRBNWqwB1TCXNl9YyHcn5qbhqv7qu/view?usp=sharing",
+        platform: "Google Drive"
     },
     {
         id: 6,
@@ -51,8 +51,8 @@ let projects = [
         description: "Manual de alojamiento de sitio web en Azure",
         category: "Azure",
         date: "2024-06-01",
-        externalUrl: "https://www.canva.com/design/DAGmIC9TSDM/CM_8nbzstPuOyouCKEC8aw/edit?utm_content=DAGmIC9TSDM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
-        platform: "Canva"
+        externalUrl: "https://drive.google.com/file/d/1nOmMLkhxpovapJqMuSM5_mBkCGVsekky/view?usp=sharing",
+        platform: "Google Drive"
     },
     {
         id: 7,
@@ -62,24 +62,6 @@ let projects = [
         date: "2024-07-15",
         externalUrl: "https://drive.google.com/file/d/176RycTS8JLJe7M6lAEsWRCpaU3XflwKV/view?usp=sharing",
         platform: "Google Drive"
-    },
-    {
-        id: 8,
-        title: "Sistema de Inventario",
-        description: "Aplicación para control de inventario y stock",
-        category: "Sistemas",
-        date: "2024-08-20",
-        externalUrl: "",
-        platform: ""
-    },
-    {
-        id: 9,
-        title: "Portfolio Reactivo",
-        description: "Sitio web portfolio con animaciones CSS",
-        category: "Frontend",
-        date: "2024-09-10",
-        externalUrl: "",
-        platform: ""
     },
     {
         id: 10,
