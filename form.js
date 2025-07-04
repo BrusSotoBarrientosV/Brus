@@ -236,10 +236,43 @@ function deleteProject(id) {
     }
 }
 
-// Función para descargar proyecto
+// Función para descargar proyecto mejorada
 function downloadProject(id) {
     const project = projects.find(p => p.id === id);
-    if (project) {
+    if (!project) {
+        alert('Proyecto no encontrado');
+        return;
+    }
+    
+    // Si el proyecto tiene un enlace externo, intentar descargarlo
+    if (project.externalUrl) {
+        try {
+            // Crear un elemento anchor temporal
+            const linkElement = document.createElement('a');
+            linkElement.href = project.externalUrl;
+            linkElement.download = `${project.title.replace(/\s+/g, '_').toLowerCase()}`;
+            linkElement.target = '_blank';
+            
+            // Agregar al DOM temporalmente
+            document.body.appendChild(linkElement);
+            
+            // Hacer clic para iniciar la descarga
+            linkElement.click();
+            
+            // Remover el elemento del DOM
+            document.body.removeChild(linkElement);
+            
+            // Mostrar mensaje de confirmación
+            alert(`Iniciando descarga de: ${project.title}`);
+            
+        } catch (error) {
+            console.error('Error al intentar descargar:', error);
+            // Fallback: abrir en nueva pestaña si la descarga falla
+            window.open(project.externalUrl, '_blank');
+            alert('No se pudo descargar automáticamente. Se abrió en una nueva pestaña.');
+        }
+    } else {
+        // Si no hay enlace externo, descargar como JSON (comportamiento original)
         const dataStr = JSON.stringify(project, null, 2);
         const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
         const exportFileDefaultName = `proyecto_${project.title.replace(/\s+/g, '_').toLowerCase()}.json`;
@@ -248,6 +281,107 @@ function downloadProject(id) {
         linkElement.setAttribute('href', dataUri);
         linkElement.setAttribute('download', exportFileDefaultName);
         linkElement.click();
+        
+        alert('Proyecto descargado como archivo JSON');
+    }
+}
+
+// Función alternativa más robusta que maneja diferentes tipos de enlaces
+function downloadProjectAdvanced(id) {
+    const project = projects.find(p => p.id === id);
+    if (!project) {
+        alert('Proyecto no encontrado');
+        return;
+    }
+    
+    if (project.externalUrl) {
+        const url = project.externalUrl;
+        
+        // Detectar el tipo de plataforma y manejar accordingly
+        if (url.includes('docs.google.com')) {
+            // Para Google Docs, convertir a enlace de descarga
+            let downloadUrl = url;
+            
+            if (url.includes('/edit')) {
+                // Convertir URL de edición a URL de descarga
+                const docId = extractGoogleDocsId(url);
+                if (docId) {
+                    // Opción 1: Descargar como PDF
+                    downloadUrl = `https://docs.google.com/document/d/${docId}/export?format=pdf`;
+                    
+                    // Opción 2: Descargar como Word
+                    // downloadUrl = `https://docs.google.com/document/d/${docId}/export?format=docx`;
+                }
+            }
+            
+            // Crear enlace temporal y descargar
+            const linkElement = document.createElement('a');
+            linkElement.href = downloadUrl;
+            linkElement.download = `${project.title.replace(/\s+/g, '_').toLowerCase()}.pdf`;
+            linkElement.target = '_blank';
+            document.body.appendChild(linkElement);
+            linkElement.click();
+            document.body.removeChild(linkElement);
+            
+        } else if (url.includes('drive.google.com')) {
+            // Para Google Drive, convertir a enlace de descarga directa
+            let fileId = '';
+            const match = url.match(/\/file\/d\/([a-zA-Z0-9-_]+)/);
+            if (match) {
+                fileId = match[1];
+                const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.href = downloadUrl;
+                linkElement.download = `${project.title.replace(/\s+/g, '_').toLowerCase()}`;
+                linkElement.target = '_blank';
+                document.body.appendChild(linkElement);
+                linkElement.click();
+                document.body.removeChild(linkElement);
+            } else {
+                // Si no se puede extraer el ID, abrir en nueva pestaña
+                window.open(url, '_blank');
+            }
+            
+        } else if (url.includes('canva.com')) {
+            // Para Canva, normalmente no se puede descargar directamente
+            // Abrir en nueva pestaña con mensaje
+            window.open(url, '_blank');
+            alert('Para descargar desde Canva, usa la opción de descarga dentro de la plataforma.');
+            
+        } else if (url.includes('miro.com')) {
+            // Para Miro, similar a Canva
+            window.open(url, '_blank');
+            alert('Para descargar desde Miro, usa la opción de exportar dentro de la plataforma.');
+            
+        } else {
+            // Para otros enlaces, intentar descarga directa
+            try {
+                const linkElement = document.createElement('a');
+                linkElement.href = url;
+                linkElement.download = `${project.title.replace(/\s+/g, '_').toLowerCase()}`;
+                linkElement.target = '_blank';
+                document.body.appendChild(linkElement);
+                linkElement.click();
+                document.body.removeChild(linkElement);
+            } catch (error) {
+                window.open(url, '_blank');
+                alert('Se abrió el enlace en una nueva pestaña.');
+            }
+        }
+        
+    } else {
+        // Si no hay enlace externo, descargar como JSON
+        const dataStr = JSON.stringify(project, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        const exportFileDefaultName = `proyecto_${project.title.replace(/\s+/g, '_').toLowerCase()}.json`;
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+        
+        alert('Proyecto descargado como archivo JSON');
     }
 }
 
